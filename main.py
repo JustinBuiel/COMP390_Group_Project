@@ -1,5 +1,6 @@
 """Group members:
-    Justin Buiel"""
+    Justin Buiel
+    Dylan Foster"""
 
 
 def print_hi(name):
