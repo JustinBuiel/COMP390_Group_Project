@@ -9,8 +9,8 @@ import sqlite3
 def _get_table_names():
     """ This private function returns the category names for use when creating and interacting with the tables """
 
-    table_names = ['Over_Ear_Headphones', 'USB_microphones', '1080p_Webcams', 'Capture_Cards',
-                   '8-channel_Audio_Mixers', 'Gaming_Laptops']
+    table_names = ['Over_Ear_Headphones', 'USB_microphones', 'Webcams', 'Capture_Cards',
+                   'Audio_Mixers', 'Gaming_Laptops']
     return table_names
 
 
@@ -27,7 +27,7 @@ def _make_tables(db_cursor, table_name):
                             product_url TEXT);''')
         db_cursor.execute(f'''DELETE FROM {table_name}''')
     except sqlite3.Error as create_error:
-        print(f'A database error has occurred: {create_error}')
+        print(f'A database table creation error has occurred: {create_error}')
 
 
 def _put_data_in_tables(category_tuple, db_connection, db_cursor, table_name):
@@ -43,7 +43,7 @@ def _put_data_in_tables(category_tuple, db_connection, db_cursor, table_name):
                            product_url))
         db_connection.commit()
     except sqlite3.Error as insert_error:
-        print(f'A database error has occurred: {insert_error}')
+        print(f'A database insert error has occurred: {insert_error}')
 
 
 def set_up_database():
