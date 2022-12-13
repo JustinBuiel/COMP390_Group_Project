@@ -3,7 +3,8 @@ from UI_Funcs import *
 
 """Group members:
     Justin Buiel
-    Dylan Foster"""
+    Dylan Foster
+    Sean Howe"""
 
 
 def main():
