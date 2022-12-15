@@ -1,18 +1,27 @@
+import db_utils
 from UI_Funcs import *
 
 """Group members:
     Justin Buiel
-    Dylan Foster"""
+    Dylan Foster
+    Sean Howe"""
 
 
-def print_hi(name):
+def main():
+    db_connection, db_cursor = db_utils.set_up_database()
+    # web scraper call
+    # ui call
+    db_utils.shut_down_data_base(db_connection)
 
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 if __name__ == '__main__':
+
     #print_hi('name')
+
+    main()
+
 
 
 # Dylan Testing of User Interface
-    user_Interface()
+#    user_Interface()
 
