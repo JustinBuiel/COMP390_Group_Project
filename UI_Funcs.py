@@ -144,16 +144,18 @@ def price_Equality():
 '''Asks the user if they would like to repeat the process and repeats if they say yes, asks them to type again if 
     they give an answer that is not yes or no, and ends the program if the user types no'''
 
-
-def repeat_project_answer():
-    yes_or_no = input("Would you like to execute another query? (yes/no): ")
-    if yes_or_no == 'yes':
-        print("\n")
+def yes_or_No():
+    repeat_OR_not = input("Would you like to execute another query? (yes/no): ")
+    if repeat_OR_not == 'yes':
         user_Interface()
-        print("\n")
-    elif yes_or_no == 'no':
+    elif repeat_OR_not == 'no':
         exit()
     else:
         print("Please type 'yes' or 'no' ")
         print("\n")
         repeat_project_answer()
+
+
+def repeat_project_answer():
+    yes_or_No()
+
