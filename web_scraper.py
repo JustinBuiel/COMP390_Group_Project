@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 from db_utils import *
 
 HEADERS_FOR_GET_REQ = (
-    {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-     'Accept-Language': 'en-US, en;q=0.5'}
+    {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US, en;q=0.5'}
 )
 
 
@@ -37,12 +38,15 @@ def find_search_results(search_url: str, key: int, db_cursor):
         listing_counter = extracting_search_results(search_results, listing_counter, listing_limit, key, db_cursor)
         url_results_page_param += 1
 
+
 def get_request_check(search_page_url):
     response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
     if response.status_code == 200:
         return response
     else:
         return None
+
+
 def extract_product_name(listing_block):
     product_name = listing_block.h2.text
     return product_name
@@ -59,6 +63,10 @@ def extract_product_rating(listing_block):
 def extract_num_ratings(listing_block):
     try:
         num_ratings = listing_block.find('span', {'class': 'a-size-base s-underline-text'}).text
+        num_ratings = str(num_ratings).replace('(', '')
+        num_ratings = str(num_ratings).replace(',', '')
+        num_ratings = str(num_ratings).replace(')', '')
+        num_ratings = int(num_ratings)
         return num_ratings
     except AttributeError:
         return None
