@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 from db_utils import *
@@ -11,15 +10,17 @@ HEADERS_FOR_GET_REQ = (
 
 
 def scraper(category_dict: dict):
-    for item,key in category_dict:
+    for item, key in category_dict:
         search_url = create_target_URL(item)
         search_results = find_search_results(search_url, key)
+
 
 def create_target_URL(keywords: str):
     query_terms = keywords.replace(' ', '+')
     base_amazon_search_url = 'https://www.amazon.com/s?k='
     search_url = f'{base_amazon_search_url}{query_terms}'
     return search_url
+
 
 def find_search_results(search_url: str, key: int, category_dict: dict):
     listing_counter = 0
@@ -30,15 +31,17 @@ def find_search_results(search_url: str, key: int, category_dict: dict):
         search_page_url = f'{search_url}{results_url_param}'
         response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
         soup_format = BeautifulSoup(response.content, 'html.parser')
-        search_results = soup_format.find_all('div', {'class': 's-result-item', 'data-component-type': 's-search-result'})
+        search_results = soup_format.find_all('div',
+                                              {'class': 's-result-item', 'data-component-type': 's-search-result'})
         extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key)
 
-
     return search_results
+
 
 def extract_product_name(listing_block):
     product_name = listing_block.h2.text
     return product_name
+
 
 def extract_product_rating(listing_block):
     try:
@@ -46,7 +49,6 @@ def extract_product_rating(listing_block):
         return rating_info
     except AttributeError:
         return None
-
 
 
 def extract_num_ratings(listing_block):
@@ -75,7 +77,8 @@ def extract_product_URL(listing_block):
         return None
 
 
-def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, url_results_page_param: int, key: int):
+def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int,
+                              url_results_page_param: int, key: int):
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
@@ -86,8 +89,5 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
         db_table_row_data[2] = extract_num_ratings(listing)
         db_table_row_data[3] = extract_product_price(listing)
         db_table_row_data[4] = extract_product_URL(listing)
-        insertion_loop(tuple(db_table_row_data), db_connection, db_cursor, key)
+        put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
         url_results_page_param += 1
-
-
-
