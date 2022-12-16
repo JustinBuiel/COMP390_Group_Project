@@ -27,11 +27,9 @@ def find_search_results(search_url: str, key: int, db_cursor):
     listing_limit = 10
     url_results_page_param = 1
     while listing_counter < listing_limit:
-        print("loop", listing_counter, listing_limit)
         results_url_param = f'&page={url_results_page_param}'
         search_page_url = f'{search_url}{results_url_param}'
         response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
-        print(response.status_code)
         soup_format = BeautifulSoup(response.content, 'html.parser')
         search_results = soup_format.find_all('div',
                                               {'class': 's-result-item', 'data-component-type': 's-search-result'})
@@ -56,6 +54,10 @@ def extract_product_rating(listing_block):
 def extract_num_ratings(listing_block):
     try:
         num_ratings = listing_block.find('span', {'class': 'a-size-base s-underline-text'}).text
+        num_ratings = str(num_ratings).replace('(', '')
+        num_ratings = str(num_ratings).replace(')', '')
+        num_ratings = str(num_ratings).replace(',', '')
+        num_ratings = int(num_ratings)
         return num_ratings
     except AttributeError:
         return None
@@ -83,7 +85,6 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
-            print("break", listing_limit, listing_counter)
             break
         db_table_row_data = [None, None, None, None, None]
         db_table_row_data[0] = extract_product_name(listing)
@@ -92,5 +93,4 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
         db_table_row_data[3] = extract_product_price(listing)
         db_table_row_data[4] = extract_product_URL(listing)
         put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
-        print("extracted")
     return listing_counter
