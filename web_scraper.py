@@ -55,6 +55,8 @@ def extract_product_name(listing_block):
 def extract_product_rating(listing_block):
     try:
         rating_info = listing_block.find('i', {'class': 'a-icon'}).text
+        if rating_info == '':
+            return None
         rating_info = str(rating_info).replace(' out of 5 stars', '')
         rating_info = float(rating_info)
         return rating_info
