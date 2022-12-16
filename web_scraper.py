@@ -11,9 +11,13 @@ HEADERS_FOR_GET_REQ = (
 
 
 def scraper(category_dict: dict):
+    db_name = 'amazon_products.db'
+    db_connection = sqlite3.connect(db_name)
+    db_cursor = db_connection.cursor()
     for item,key in category_dict:
         search_url = create_target_URL(item)
-        search_results = find_search_results(search_url, key)
+        search_results = find_search_results(search_url, key, db_cursor, db_connection)
+
 
 def create_target_URL(keywords: str):
     query_terms = keywords.replace(' ', '+')
@@ -21,7 +25,8 @@ def create_target_URL(keywords: str):
     search_url = f'{base_amazon_search_url}{query_terms}'
     return search_url
 
-def find_search_results(search_url: str, key: int, category_dict: dict):
+
+def find_search_results(search_url: str, key: int, db_cursor, db_connection):
     listing_counter = 0
     listing_limit = 300
     url_results_page_param = 1
@@ -31,10 +36,10 @@ def find_search_results(search_url: str, key: int, category_dict: dict):
         response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
         soup_format = BeautifulSoup(response.content, 'html.parser')
         search_results = soup_format.find_all('div', {'class': 's-result-item', 'data-component-type': 's-search-result'})
-        extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key)
+        extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key, db_cursor, db_connection)
 
 
-    return search_results
+
 
 def extract_product_name(listing_block):
     product_name = listing_block.h2.text
@@ -75,7 +80,7 @@ def extract_product_URL(listing_block):
         return None
 
 
-def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, url_results_page_param: int, key: int):
+def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, url_results_page_param: int, key: int, db_cursor, db_connection):
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
