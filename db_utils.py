@@ -30,10 +30,10 @@ def _make_tables(db_cursor, table_name):
         print(f'A database table creation error has occurred: {create_error}')
 
 
-def _put_data_in_tables(category_tuple, db_connection, db_cursor, table_name):
+def put_data_in_tables(product_tuple, db_cursor, table_name):
     """ This private function takes the entry data, database cursor object and a table name
         as it's parameters in order to insert the product data into the correct table """
-    product_name, rating, num_ratings, price, product_url = category_tuple
+    product_name, rating, num_ratings, price, product_url = product_tuple
     try:
         db_cursor.execute(f'''INSERT INTO {table_name} VALUES(?, ?, ?, ?, ?)''',
                           (product_name,
@@ -41,7 +41,6 @@ def _put_data_in_tables(category_tuple, db_connection, db_cursor, table_name):
                            num_ratings,
                            price,
                            product_url))
-        db_connection.commit()
     except sqlite3.Error as insert_error:
         print(f'A database insert error has occurred: {insert_error}')
 
@@ -65,15 +64,6 @@ def set_up_database():
         print(f'A database error has occurred: {db_error}')
     finally:
         return db_connection, db_cursor
-
-
-def insertion_loop(category_dict: dict, db_connection, db_cursor, table_num: int):
-    """ This function accepts a dictionary, the database connection and cursor and a table_num
-    int in order to loop through the dictionary of products captured by the web scraper
-    and insert said data into the correct tables """
-    table_names = _get_table_names()
-    for k, v in category_dict.items():
-        _put_data_in_tables(v, db_connection, table_names[table_num])
 
 
 def shut_down_data_base(db_connection):
