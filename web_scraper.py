@@ -55,6 +55,7 @@ def extract_product_name(listing_block):
 def extract_product_rating(listing_block):
     try:
         rating_info = listing_block.find('i', {'class': 'a-icon'}).text
+        rating_info = float(rating_info)
         return rating_info
     except AttributeError:
         return None
@@ -75,7 +76,11 @@ def extract_num_ratings(listing_block):
 def extract_product_price(listing_block):
     try:
         price_integer = listing_block.find('span', {'class': 'a-price-whole'}).text
+        price_integer = str(price_integer).replace(',', '')
+        price_integer = float(price_integer)
         price_decimal = listing_block.find('span', {'class': 'a-price-fraction'}).text
+        price_decimal = str(price_decimal).replace(',', '')
+        price_decimal = float(price_decimal)
         return price_integer + price_decimal
     except AttributeError:
         return None
