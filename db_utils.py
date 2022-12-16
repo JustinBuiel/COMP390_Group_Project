@@ -14,7 +14,7 @@ def _get_table_names():
     return table_names
 
 
-def _make_tables(db_cursor, table_name):
+def _make_tables(db_cursor, db_connection, table_name):
     """ This private function takes the database cursor object and a table name as it's
         parameters in order to create the 6 categories' tables. The tables are also cleared
         out so old data doesn't affect results """
@@ -26,14 +26,17 @@ def _make_tables(db_cursor, table_name):
                             price REAL,
                             product_url TEXT);''')
         db_cursor.execute(f'''DELETE FROM {table_name}''')
+        db_connection.commit()
     except sqlite3.Error as create_error:
         print(f'A database table creation error has occurred: {create_error}')
 
 
-def put_data_in_tables(product_tuple, db_cursor, table_name):
+def put_data_in_tables(product_tuple, db_cursor, table_num):
     """ This private function takes the entry data, database cursor object and a table name
         as it's parameters in order to insert the product data into the correct table """
     product_name, rating, num_ratings, price, product_url = product_tuple
+    table_names = _get_table_names()
+    table_name = table_names[table_num]
     try:
         db_cursor.execute(f'''INSERT INTO {table_name} VALUES(?, ?, ?, ?, ?)''',
                           (product_name,
@@ -58,7 +61,7 @@ def set_up_database():
         # create the tables by passing a table to the _make_tables function
         table_names = _get_table_names()
         for table_name in table_names:
-            _make_tables(db_cursor, table_name)
+            _make_tables(db_cursor, db_connection, table_name)
         print('Successfully created all tables')
     except sqlite3.Error as db_error:
         print(f'A database error has occurred: {db_error}')

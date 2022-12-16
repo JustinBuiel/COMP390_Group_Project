@@ -19,8 +19,9 @@ category_dict = {
 
 def main():
     db_connection, db_cursor = db_utils.set_up_database()
-    scraper(category_dict)
+    scraper(category_dict, db_cursor)
     db_connection.commit()
+    print("commit")
     # user_Interface()
     db_utils.shut_down_data_base(db_connection)
 
