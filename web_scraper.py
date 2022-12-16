@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from db_utils import *
-import sqlite3
 
 HEADERS_FOR_GET_REQ = (
     {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
@@ -27,19 +26,23 @@ def find_search_results(search_url: str, key: int, db_cursor):
     listing_limit = 10
     url_results_page_param = 1
     while listing_counter < listing_limit:
-        print("loop", listing_counter, listing_limit)
         results_url_param = f'&page={url_results_page_param}'
         search_page_url = f'{search_url}{results_url_param}'
-        response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
-        print(response.status_code)
+        response = get_request_check(search_page_url)
+        if response is None:
+            break
         soup_format = BeautifulSoup(response.content, 'html.parser')
         search_results = soup_format.find_all('div',
                                               {'class': 's-result-item', 'data-component-type': 's-search-result'})
-        listing_counter = extracting_search_results(search_results, listing_counter, listing_limit, key,
-                                                    db_cursor)
+        listing_counter = extracting_search_results(search_results, listing_counter, listing_limit, key, db_cursor)
         url_results_page_param += 1
 
-
+def get_request_check(search_page_url):
+    response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
+    if response.status_code == 200:
+        return response
+    else:
+        return None
 def extract_product_name(listing_block):
     product_name = listing_block.h2.text
     return product_name
