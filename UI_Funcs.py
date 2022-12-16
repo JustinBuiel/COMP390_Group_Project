@@ -26,6 +26,8 @@ def introduction():
     print("\n")
 
 
+
+
 '''Contains the rest of the questions asked to the user and takes their answer to give them the end result'''
 
 
@@ -76,12 +78,13 @@ def stars_Equality():
         stars_Equality()
         print("\n")
     print("\n")
+    return star_equality_op
 
 '''Asks the user for their desired number of reviews'''
 
 
 def reviews_Target():
-    num_of_reviews = input("Enter a target number of reviews (ex. '1000'): ")
+    num_of_reviews = input("Enter a target number of reviews (ex. 1000): ")
     if not num_of_reviews.isdigit():
         print("\n")
         print("Please enter a valid value \n")
@@ -89,11 +92,13 @@ def reviews_Target():
         print("\n")
     else:
         num_of_reviews = int(num_of_reviews)
+
     if num_of_reviews < 0 or num_of_reviews > 100000:
         print("Please enter a valid value")
         reviews_Target()
-        print("\n")
+        return None
     print("\n")
+    return num_of_reviews
 
 
 '''Asks the user to enter an equality operator to sort their number of reviews'''
@@ -148,12 +153,14 @@ def yes_or_No():
     repeat_OR_not = input("Would you like to execute another query? (yes/no): ")
     if repeat_OR_not == 'yes':
         user_Interface()
+        return repeat_OR_not
     elif repeat_OR_not == 'no':
         exit()
     else:
         print("Please type 'yes' or 'no' ")
         print("\n")
         repeat_project_answer()
+        return repeat_OR_not
 
 
 def repeat_project_answer():
