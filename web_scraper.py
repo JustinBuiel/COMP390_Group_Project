@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 from db_utils import *
@@ -14,9 +13,9 @@ def scraper(category_dict: dict):
     db_name = 'amazon_products.db'
     db_connection = sqlite3.connect(db_name)
     db_cursor = db_connection.cursor()
-    for item,key in category_dict:
+    for item, key in category_dict:
         search_url = create_target_URL(item)
-        search_results = find_search_results(search_url, key, db_cursor, db_connection)
+        search_results = find_search_results(search_url, key, db_cursor)
 
 
 def create_target_URL(keywords: str):
@@ -26,7 +25,7 @@ def create_target_URL(keywords: str):
     return search_url
 
 
-def find_search_results(search_url: str, key: int, db_cursor, db_connection):
+def find_search_results(search_url: str, key: int, db_cursor):
     listing_counter = 0
     listing_limit = 300
     url_results_page_param = 1
@@ -35,15 +34,16 @@ def find_search_results(search_url: str, key: int, db_cursor, db_connection):
         search_page_url = f'{search_url}{results_url_param}'
         response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
         soup_format = BeautifulSoup(response.content, 'html.parser')
-        search_results = soup_format.find_all('div', {'class': 's-result-item', 'data-component-type': 's-search-result'})
-        extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key, db_cursor, db_connection)
-
-
+        search_results = soup_format.find_all('div',
+                                              {'class': 's-result-item', 'data-component-type': 's-search-result'})
+        extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key,
+                                  db_cursor)
 
 
 def extract_product_name(listing_block):
     product_name = listing_block.h2.text
     return product_name
+
 
 def extract_product_rating(listing_block):
     try:
@@ -51,7 +51,6 @@ def extract_product_rating(listing_block):
         return rating_info
     except AttributeError:
         return None
-
 
 
 def extract_num_ratings(listing_block):
@@ -80,7 +79,8 @@ def extract_product_URL(listing_block):
         return None
 
 
-def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, url_results_page_param: int, key: int, db_cursor, db_connection):
+def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int,
+                              url_results_page_param: int, key: int, db_cursor):
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
@@ -91,8 +91,5 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
         db_table_row_data[2] = extract_num_ratings(listing)
         db_table_row_data[3] = extract_product_price(listing)
         db_table_row_data[4] = extract_product_URL(listing)
-        insertion_loop(tuple(db_table_row_data), db_connection, db_cursor, key)
+        put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
         url_results_page_param += 1
-
-
-
