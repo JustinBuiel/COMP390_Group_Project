@@ -12,7 +12,7 @@ HEADERS_FOR_GET_REQ = (
 def scraper(category_dict: dict, db_cursor):
     for item, key in category_dict.items():
         search_url = create_target_URL(item)
-        search_results = find_search_results(search_url, key, db_cursor)
+        find_search_results(search_url, key, db_cursor)
 
 
 def create_target_URL(keywords: str):
@@ -79,8 +79,7 @@ def extract_product_URL(listing_block):
         return None
 
 
-def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int,
-                              url_results_page_param: int, key: int, db_cursor):
+def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, key: int, db_cursor):
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
