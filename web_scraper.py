@@ -35,7 +35,7 @@ def find_search_results(search_url: str, key: int, db_cursor):
         soup_format = BeautifulSoup(response.content, 'html.parser')
         search_results = soup_format.find_all('div',
                                               {'class': 's-result-item', 'data-component-type': 's-search-result'})
-        listing_counter = extracting_search_results(search_results, listing_counter, listing_limit, url_results_page_param, key,
+        listing_counter = extracting_search_results(search_results, listing_counter, listing_limit, key,
                                                     db_cursor)
         url_results_page_param += 1
 
