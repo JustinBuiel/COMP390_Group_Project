@@ -86,7 +86,6 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:
-            print("break", listing_limit, listing_counter)
             break
         db_table_row_data = [None, None, None, None, None]
         db_table_row_data[0] = extract_product_name(listing)
@@ -95,5 +94,4 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
         db_table_row_data[3] = extract_product_price(listing)
         db_table_row_data[4] = extract_product_URL(listing)
         put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
-        print("extracted")
     return listing_counter
