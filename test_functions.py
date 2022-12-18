@@ -1,24 +1,27 @@
 import pytest
-import requests
 
 from UI_Funcs import *
-from db_utils import *
+
 from io import StringIO
-from testfixtures import TempDirectory
+
 
 ''' Automated Unit Testing Python File for four functions'''
 
+'''Unit Test Function for is_nums'''
+def test_is_nums():
+    assert is_nums('13') == True
+    assert is_nums('22000') == True
+    assert is_nums('Jaylen Brown') == False
+    assert is_nums('22 \n') == False
+    assert is_nums(' ') == False
+    assert is_nums('\n') == False
+    with pytest.raises(AttributeError) as error:
+        is_nums(None)
+    assert error.type is AttributeError
+    with pytest.raises(AttributeError) as error:
+        is_nums(13)
+    assert error.type is AttributeError
 
-#FIRST FUNCTION TESTS
-# def test_yes_or_No(monkeypatch,capfd):
-#
-
-
-
-
-#SECOND FUNCTION TESTS
-# def test_get_request_check():
-#
 
 
 
@@ -33,7 +36,7 @@ def test_stars_Equality(monkeypatch, capfd):
 
     #TEST 2: TESTS CORRECT PROMPT IS PRINTED TO TERMINAL
     out, err = capfd.readouterr()
-    assert out == 'Choose an equality operator (>, <, >=, <=, =): \n\n'
+    assert out == 'Choose an equality operator (>, <, >=, <=, =): '
 
     #TEST 3: TESTS INPUT OF '<'
     test_string2 = '<'
@@ -89,6 +92,16 @@ def test_stars_Equality(monkeypatch, capfd):
 
 
 
+'''Unit Test for function has_dot'''
+def test_has_dot():
+    assert has_dot('13') == False
+    assert has_dot('19.99') == True
+    assert has_dot('KG') == False
+    assert has_dot('\n') == False
+    assert has_dot(' ') == False
+    with pytest.raises(AttributeError) as error:
+        has_dot(13)
+    assert error.type is AttributeError
 
 
 '''TESTS FUNCTION for the UI_Funcs.py function: review_Target'''
