@@ -18,18 +18,15 @@ category_dict = {
 
 
 def main():
-    db_connection, db_cursor = db_utils.set_up_database()
-    scraper(category_dict, db_cursor)
-    db_connection.commit()
-    print("commit")
-    # user_Interface()
-    db_utils.shut_down_data_base(db_connection)
+    # db_connection, db_cursor = db_utils.set_up_database()
+    # scraper(category_dict, db_cursor)
+    # db_connection.commit()
+    # print("commit")
+     user_Interface()
+    # db_utils.shut_down_data_base(db_connection)
 
 
 if __name__ == '__main__':
     # print_hi('name')
 
     main()
-
-# Dylan Testing of User Interface
-#    user_Interface()

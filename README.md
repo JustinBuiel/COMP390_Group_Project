@@ -9,7 +9,7 @@ libraries:
   - pytest
   - testfixtures
 
-This project collects and filters Amazon’s product data for 5 search keywords:
+This project collects and filters Amazon’s product data for 6 search keywords:
   - Over Ear Headphones
   - USB Microphones
   - 1080p Webcams
