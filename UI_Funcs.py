@@ -29,7 +29,7 @@ def has_dot(usr_input: str):
 def introduction(db_cursor):
     """Prints the product category message and takes the users input"""
     print('\n0. Over Ear Headphones\n''1. USB Microphones\n''2. 1080p Webcams\n''3. Capture Cards\n''4. 8-channel Audio Mixers\n''5. Gaming Laptops \n')
-    uI_num = input('Choose one of the Product Categories: \n')
+    uI_num = input('Choose one of the Product Categories: ')
     if is_nums(uI_num) is False:
         print('Please enter a valid value \n')
         introduction(db_cursor)

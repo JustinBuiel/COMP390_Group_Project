@@ -81,7 +81,7 @@ def filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq
     except sqlite3.Error as query_error:
         print(f'A database error has occurred: {query_error}')
     with open('filtered_data.txt', 'a') as fileIO:
-        fileIO.write(table_name + ' results: \n\n')
+        fileIO.write(table_name + ' results: \n=============================================================\n\n')
         for row in response:
             print(row)
             write_to_file(row, fileIO)
@@ -91,7 +91,7 @@ def filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq
 # noinspection PyPep8Naming
 def write_to_file(row, fileIO):
     """This function writes each individual row of the results in a neatly formatted way to the text file"""
-    fileIO.write('Product: ' + str(row[0]) + '\n')
+    fileIO.write('Product: ' + str(row[0]).replace('\x9d', '') + '\n')
     fileIO.write('Rating: ' + str(row[1]) + '/5\n')
     fileIO.write('Number of Reviews: ' + str(row[2]) + '\n')
     fileIO.write('Price: ' + str(row[3]) + '\n')

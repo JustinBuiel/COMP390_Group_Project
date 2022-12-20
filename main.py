@@ -27,6 +27,7 @@ def main():
         pass
     user_Interface(db_cursor)
     db_utils.shut_down_data_base(db_connection)
+    print('\nThank you, please copy or send the text file somehwhere else in order to save the data')
 
 
 if __name__ == '__main__':
