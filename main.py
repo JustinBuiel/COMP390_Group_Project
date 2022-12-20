@@ -1,11 +1,10 @@
-import db_utils
-from UI_Funcs import *
-from web_scraper import scraper
+"""
+This is the main driver of the program. It makes calls to the other functions in other modules.
+"""
 
-"""Group members:
-    Justin Buiel
-    Dylan Foster
-    Sean Howe"""
+import db_utils
+from UI_Funcs import user_Interface
+from web_scraper import scraper
 
 category_dict = {
     "Over Ear Headphones": 0,
@@ -18,15 +17,15 @@ category_dict = {
 
 
 def main():
-    # db_connection, db_cursor = db_utils.set_up_database()
-    # scraper(category_dict, db_cursor)
-    # db_connection.commit()
-    # print("commit")
-     user_Interface()
-    # db_utils.shut_down_data_base(db_connection)
+    """This is the main function, it is called when the program is run.
+    This module calls other functions that do the heavy lifting"""
+    db_connection, db_cursor = db_utils.set_up_database()
+    scraper(category_dict, db_cursor)
+    db_connection.commit()
+    print("Database population complete.")
+    user_Interface(db_cursor)
+    db_utils.shut_down_data_base(db_connection)
 
 
 if __name__ == '__main__':
-    # print_hi('name')
-
     main()
