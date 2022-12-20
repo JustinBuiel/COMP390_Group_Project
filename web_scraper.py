@@ -19,6 +19,7 @@ def scraper(category_dict: dict, db_cursor):
     """This function loops through each of the 6 keys from the dictionary in main.py
     and runs the find_search_results() for each of the 6 different queries."""
     for item, key in category_dict.items():
+        print(f'Searching for {item}')
         search_url = create_target_URL(item)
         find_search_results(search_url, key, db_cursor)
 
@@ -101,8 +102,7 @@ def extract_product_price(listing_block):
         price_integer = str(price_integer).replace(',', '')
         price_integer = float(price_integer)
         price_decimal = listing_block.find('span', {'class': 'a-price-fraction'}).text
-        price_decimal = str(price_decimal).replace(',', '')
-        price_decimal = float(price_decimal)
+        price_decimal = float(price_decimal)/100
         return price_integer + price_decimal
     except AttributeError:
         return None
