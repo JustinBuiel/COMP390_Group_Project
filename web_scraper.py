@@ -1,5 +1,5 @@
 """
-This module establishes the 6 different target-URL's and then extracts the 5 items for 300 items of each query and
+This module establishes the 6 different target-URLs and then extracts the 5 items for 300 items of each query and
 calls the put_data_in_tables() function from db_utils.py which puts the info into the appropriate table based off the
 searched item.
 """
@@ -14,40 +14,30 @@ HEADERS_FOR_GET_REQ = (
         'Accept-Language': 'en-US, en;q=0.5'}
 )
 
-"""
-This function loops through each of the 6 keys from the dictionary in main.py and runs the find_search_results() for
-each of the 6 different queries.
-"""
-
 
 def scraper(category_dict: dict, db_cursor):
+    """This function loops through each of the 6 keys from the dictionary in main.py
+    and runs the find_search_results() for each of the 6 different queries."""
     for item, key in category_dict.items():
         search_url = create_target_URL(item)
         find_search_results(search_url, key, db_cursor)
 
 
-"""
-This function takes the keyword from the scraper and creates the target URL by combing the base search url and the 
-query term.
-"""
-
-
 def create_target_URL(keywords: str):
+    """This function takes the keyword from the scraper and creates the
+    target URL by combing the base search url and the query term."""
+
     query_terms = keywords.replace(' ', '+')
     base_amazon_search_url = 'https://www.amazon.com/s?k='
     search_url = f'{base_amazon_search_url}{query_terms}'
     return search_url
 
 
-"""
-This function takes the search url and then sorts through 300 items, moving from page 1 to page 2 to page x until it 
-reaches 300.
-"""
-
-
 def find_search_results(search_url: str, key: int, db_cursor):
+    """This function takes the search url and then sorts through 300 items, moving
+    from page 1 to page 2 to page x until it reaches 300."""
     listing_counter = 0
-    listing_limit = 10
+    listing_limit = 300
     url_results_page_param = 1
     while listing_counter < listing_limit:
         results_url_param = f'&page={url_results_page_param}'
@@ -62,12 +52,8 @@ def find_search_results(search_url: str, key: int, db_cursor):
         url_results_page_param += 1
 
 
-"""
-This function just checks that the get request is valid and returns a status code of 200.
-"""
-
-
 def get_request_check(search_page_url):
+    """This function just checks that the get request is valid and returns a status code of 200."""
     response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
     if response.status_code == 200:
         return response
@@ -76,22 +62,14 @@ def get_request_check(search_page_url):
         return None
 
 
-"""
-This function extracts the products name
-"""
-
-
 def extract_product_name(listing_block):
+    """This function extracts the products name"""
     product_name = listing_block.h2.text
     return product_name
 
 
-"""
-This function extracts the products rating
-"""
-
-
 def extract_product_rating(listing_block):
+    """This function extracts the products rating"""
     try:
         rating_info = listing_block.find('i', {'class': 'a-icon'}).text
         if rating_info == '':
@@ -103,12 +81,8 @@ def extract_product_rating(listing_block):
         return None
 
 
-"""
-This function extracts the products number rating
-"""
-
-
 def extract_num_ratings(listing_block):
+    """This function extracts the products number rating"""
     try:
         num_ratings = listing_block.find('span', {'class': 'a-size-base s-underline-text'}).text
         num_ratings = str(num_ratings).replace('(', '')
@@ -120,12 +94,8 @@ def extract_num_ratings(listing_block):
         return None
 
 
-"""
-This function extracts the products price
-"""
-
-
 def extract_product_price(listing_block):
+    """This function extracts the products price"""
     try:
         price_integer = listing_block.find('span', {'class': 'a-price-whole'}).text
         price_integer = str(price_integer).replace(',', '')
@@ -138,12 +108,8 @@ def extract_product_price(listing_block):
         return None
 
 
-"""
-This function extracts the products URL
-"""
-
-
 def extract_product_URL(listing_block):
+    """This function extracts the products URL"""
     try:
         product_url_segment = listing_block.h2.a['href']
         complete_product_url = 'https://amazon.com' + product_url_segment
@@ -152,13 +118,9 @@ def extract_product_URL(listing_block):
         return None
 
 
-"""
-This function takes the 5 extracted values from the functions above, stores them in the db_table_row_data and then
-sends the information into the put_data_in_tables() function which puts the data into the appropriate table.
-"""
-
-
 def extracting_search_results(search_results: list, listing_counter: int, listing_limit: int, key: int, db_cursor):
+    """This function takes the 5 extracted values from the functions above, stores them in the db_table_row_data and then
+    sends the information into the put_data_in_tables() function which puts the data into the appropriate table."""
     for listing in search_results:
         listing_counter += 1
         if listing_counter > listing_limit:

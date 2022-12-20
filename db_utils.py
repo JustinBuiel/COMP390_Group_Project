@@ -7,7 +7,7 @@ import sqlite3
 
 
 def _get_table_names():
-    """ This private function returns the category names for use when creating and interacting with the tables """
+    """This private function returns the category names for use when creating and interacting with the tables"""
 
     table_names = ['Over_Ear_Headphones', 'USB_microphones', 'Webcams', 'Capture_Cards',
                    'Audio_Mixers', 'Gaming_Laptops']
@@ -15,9 +15,9 @@ def _get_table_names():
 
 
 def _make_tables(db_cursor, db_connection, table_name):
-    """ This private function takes the database cursor object and a table name as it's
-        parameters in order to create the 6 categories' tables. The tables are also cleared
-        out so old data doesn't affect results """
+    """This private function takes the database cursor object and a table name as it's
+    parameters in order to create the 6 categories' tables. The tables are also cleared
+    out so old data doesn't affect results"""
     try:
         db_cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}(
                             product_name TEXT,
@@ -32,8 +32,8 @@ def _make_tables(db_cursor, db_connection, table_name):
 
 
 def put_data_in_tables(product_tuple, db_cursor, table_num):
-    """ This private function takes the entry data, database cursor object and a table name
-        as it's parameters in order to insert the product data into the correct table """
+    """This private function takes the entry data, database cursor object and a table name
+    as it's parameters in order to insert the product data into the correct table"""
     product_name, rating, num_ratings, price, product_url = product_tuple
     table_names = _get_table_names()
     table_name = table_names[table_num]
@@ -49,8 +49,8 @@ def put_data_in_tables(product_tuple, db_cursor, table_num):
 
 
 def set_up_database():
-    """ This function sets up our database and then creates the tables. The function
-        returns the important connection and cursor objects for use throughout the program """
+    """This function sets up our database and then creates the tables. The function
+    returns the important connection and cursor objects for use throughout the program"""
     db_connection = None
     try:
         # initialize the database and its important connection/cursor objects
@@ -70,6 +70,8 @@ def set_up_database():
 
 
 def filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq, db_cursor):
+    """This function takes the user input from ui_funcs and executes a query on the appropriate table.
+    It calls a function to write the results to a file for easy sharing"""
     table_names = _get_table_names()
     table_name = table_names[table_num]
     sql = f'''SELECT * FROM {table_name} where rating {stars_eq} {stars} AND num_ratings {reviews_eq} {reviews} AND price {price_eq} {price}'''
@@ -86,7 +88,9 @@ def filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq
         fileIO.write('\n')
 
 
+# noinspection PyPep8Naming
 def write_to_file(row, fileIO):
+    """This function writes each individual row of the results in a neatly formatted way to the text file"""
     fileIO.write('Product: ' + str(row[0]) + '\n')
     fileIO.write('Rating: ' + str(row[1]) + '/5\n')
     fileIO.write('Number of Reviews: ' + str(row[2]) + '\n')
@@ -96,7 +100,6 @@ def write_to_file(row, fileIO):
 
 
 def shut_down_data_base(db_connection):
-    """ This function actually populates the database tables and disconnects from the database """
-
+    """This function actually populates the database tables and disconnects from the database"""
     db_connection.commit()
     db_connection.close()

@@ -109,7 +109,7 @@ def test_review_Target(monkeypatch, capfd):
 
     # TEST 2: TESTS CORRECT PROMPT IS PRINTED TO TERMINAL
     out, err = capfd.readouterr()
-    assert out == "Enter a target number of reviews (ex. 1000): "
+    assert out == 'Enter a target number of reviews (ex. 1000): '
 
     # TEST 3: TESTS INVALID INPUT VALUE OF STRING 'Jaylen Brown'
     with pytest.raises(EOFError) as error:
