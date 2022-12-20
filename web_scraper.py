@@ -47,7 +47,7 @@ reaches 300.
 
 def find_search_results(search_url: str, key: int, db_cursor):
     listing_counter = 0
-    listing_limit = 300
+    listing_limit = 10
     url_results_page_param = 1
     while listing_counter < listing_limit:
         results_url_param = f'&page={url_results_page_param}'

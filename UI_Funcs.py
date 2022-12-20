@@ -34,33 +34,29 @@ def introduction(db_cursor):
     if is_nums(uI_num) is False:
         print("Please enter a valid value \n")
         introduction(db_cursor)
-        print("\n")
     uI_num = int(uI_num)
     if uI_num != 0 and uI_num != 1 and uI_num != 2 and uI_num != 3 and uI_num != 4 and uI_num != 5:
         print("Please enter a valid value \n")
         introduction(db_cursor)
-        print("\n")
     else:
+        print()
         follow_up_questions(uI_num, db_cursor)
-        print("\n")
 
 
 def follow_up_questions(table_num, db_cursor):
     """Contains the rest of the questions asked to the user and takes their answer to give them the end result"""
     stars = stars_Target()
-    print("\n")
     stars_eq = stars_Equality()
-    print("\n")
+    print()
     reviews = reviews_Target()
-    print("\n")
     reviews_eq = reviews_Equality()
-    print("\n")
+    print()
     price = price_Target()
-    print("\n")
     price_eq = price_Equality()
-    print("\n")
-    yes_or_No(db_cursor)
+    print()
     db_utils.filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq, db_cursor)
+    print()
+    yes_or_No(db_cursor)
 
 
 def stars_Target():
@@ -87,7 +83,6 @@ def stars_Equality():
     if star_equality_op != '>' and star_equality_op != '<' and star_equality_op != '>=' and star_equality_op != '<=' and star_equality_op != '=':
         print("Please enter a valid value")
         stars_Equality()
-        print("\n")
     return star_equality_op
 
 
@@ -95,17 +90,14 @@ def reviews_Target():
     """Asks the user for their desired number of reviews"""
     num_of_reviews = input("Enter a target number of reviews (ex. 1000): ")
     if is_nums(num_of_reviews) is False:
-        print("\n")
         print("Please enter a valid value \n")
         reviews_Target()
-        print("\n")
     else:
         num_of_reviews = int(num_of_reviews)
     if num_of_reviews < 0 or num_of_reviews > 100000:
         print("Please enter a valid value")
         reviews_Target()
         return None
-    print("\n")
     return num_of_reviews
 
 
@@ -115,9 +107,7 @@ def reviews_Equality():
     if review_num_op != '>' and review_num_op != '<' and review_num_op != '>=' and review_num_op != '<=' and review_num_op != '=':
         print("Please enter a valid value")
         reviews_Equality()
-        print("\n")
     else:
-        print("\n")
         return review_num_op
 
 
@@ -145,9 +135,7 @@ def price_Equality():
     if price_op != '>' and price_op != '<' and price_op != '>=' and price_op != '<=' and price_op != '=':
         print("Please enter a valid value")
         price_Equality()
-        print("\n")
     else:
-        print("\n")
         return price_op
 
 

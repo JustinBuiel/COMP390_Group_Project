@@ -72,11 +72,27 @@ def set_up_database():
 def filter_data(table_num, stars, stars_eq, reviews, reviews_eq, price, price_eq, db_cursor):
     table_names = _get_table_names()
     table_name = table_names[table_num]
-    sql = f'''SELECT * FROM {table_name} where rating {stars_eq} {stars} AND
-            num_ratings {reviews_eq} {reviews} AND price {price_eq} {price}'''
-    response = db_cursor.execute(sql)
-    with open('filtered_data.txt', 'w') as fileIO:
-        fileIO.write(response)
+    sql = f'''SELECT * FROM {table_name} where rating {stars_eq} {stars} AND num_ratings {reviews_eq} {reviews} AND price {price_eq} {price}'''
+    print(sql + '\n')
+    try:
+        response = db_cursor.execute(sql)
+    except sqlite3.Error as query_error:
+        print(f'A database error has occurred: {query_error}')
+    with open('filtered_data.txt', 'a') as fileIO:
+        fileIO.write(table_name + ' results: \n\n')
+        for row in response:
+            print(row)
+            write_to_file(row, fileIO)
+        fileIO.write('\n')
+
+
+def write_to_file(row, fileIO):
+    fileIO.write('Product: ' + str(row[0]) + '\n')
+    fileIO.write('Rating: ' + str(row[1]) + '/5\n')
+    fileIO.write('Number of Reviews: ' + str(row[2]) + '\n')
+    fileIO.write('Price: ' + str(row[3]) + '\n')
+    fileIO.write('URL: ' + str(row[4]) + '\n')
+    fileIO.write('\n')
 
 
 def shut_down_data_base(db_connection):

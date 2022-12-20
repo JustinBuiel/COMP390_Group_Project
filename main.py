@@ -23,6 +23,8 @@ def main():
     scraper(category_dict, db_cursor)
     db_connection.commit()
     print("Database population complete.")
+    with open('filtered_data.txt', 'w'):
+        pass
     user_Interface(db_cursor)
     db_utils.shut_down_data_base(db_connection)
 

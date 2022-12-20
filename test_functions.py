@@ -9,12 +9,12 @@ from io import StringIO
 
 def test_is_nums():
     """Unit Test Function for is_nums"""
-    assert is_nums('13') == True
-    assert is_nums('22000') == True
-    assert is_nums('Jaylen Brown') == False
-    assert is_nums('22 \n') == False
-    assert is_nums(' ') == False
-    assert is_nums('\n') == False
+    assert is_nums('13') is True
+    assert is_nums('22000') is True
+    assert is_nums('Jaylen Brown') is False
+    assert is_nums('22 \n') is False
+    assert is_nums(' ') is False
+    assert is_nums('\n') is False
     with pytest.raises(AttributeError) as error:
         is_nums(None)
     assert error.type is AttributeError
@@ -90,11 +90,11 @@ def test_stars_Equality(monkeypatch, capfd):
 
 def test_has_dot():
     """Unit Test for function has_dot"""
-    assert has_dot('13') == False
-    assert has_dot('19.99') == True
-    assert has_dot('KG') == False
-    assert has_dot('\n') == False
-    assert has_dot(' ') == False
+    assert has_dot('13') is False
+    assert has_dot('19.99') is True
+    assert has_dot('KG') is False
+    assert has_dot('\n') is False
+    assert has_dot(' ') is False
     with pytest.raises(AttributeError) as error:
         has_dot(13)
     assert error.type is AttributeError
@@ -109,7 +109,7 @@ def test_review_Target(monkeypatch, capfd):
 
     # TEST 2: TESTS CORRECT PROMPT IS PRINTED TO TERMINAL
     out, err = capfd.readouterr()
-    assert out == "Enter a target number of reviews (ex. 1000): \n\n"
+    assert out == "Enter a target number of reviews (ex. 1000): "
 
     # TEST 3: TESTS INVALID INPUT VALUE OF STRING 'Jaylen Brown'
     with pytest.raises(EOFError) as error:
