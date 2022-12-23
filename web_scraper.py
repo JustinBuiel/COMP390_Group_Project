@@ -11,12 +11,13 @@ import db_utils
 HEADERS_FOR_GET_REQ = (
     {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US, en;q=0.5'}
+        'Accept-Language': 'en-US, en;q=0.5',
+        'referer': 'https://google.com'}
 )
 
 
 def scraper(category_dict: dict, db_cursor):
-    """This function loops through each of the 6 keys from the dictionary in main.py
+    """This function loops through each of the 6 keys from the dictionary in amazon_product_finder.py
     and runs the find_search_results() for each of the 6 different queries."""
     for item, key in category_dict.items():
         print(f'Searching for {item}')
