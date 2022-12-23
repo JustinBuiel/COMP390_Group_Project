@@ -21,7 +21,7 @@ The User then filters by category, number of ratings, the rating itself, and the
 
 To use the program, answer the questions using valid inputs, and then head over to the filtered data table to find all the results.
 
-
+CMD line: python main.py (makesure you have all necessary librarires already installed with python on your machine)
 
 Developed in Python 3.11
 
