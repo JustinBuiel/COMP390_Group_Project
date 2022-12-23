@@ -146,6 +146,7 @@ def yes_or_No(db_cursor):
         user_Interface(db_cursor)
         return repeat_OR_not
     elif repeat_OR_not == 'no':
+        print('\nThank you, please copy or send the text file somehwhere else in order to save the data')
         exit()
     else:
         print('Please type \'yes\' or \'no\'\n')

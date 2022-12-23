@@ -3,10 +3,10 @@ This module establishes the 6 different target-URLs and then extracts the 5 item
 calls the put_data_in_tables() function from db_utils.py which puts the info into the appropriate table based off the
 searched item.
 """
-
+import time
 import requests
 from bs4 import BeautifulSoup
-from db_utils import *
+import db_utils
 
 HEADERS_FOR_GET_REQ = (
     {
@@ -56,10 +56,11 @@ def find_search_results(search_url: str, key: int, db_cursor):
 def get_request_check(search_page_url):
     """This function just checks that the get request is valid and returns a status code of 200."""
     response = requests.get(search_page_url, headers=HEADERS_FOR_GET_REQ)
+    time.sleep(2)
     if response.status_code == 200:
         return response
     else:
-        print(f'A Database Error has occurred: {response.status_code}')
+        print(f'Bad web response: {response.status_code}, {response.reason}')
         return None
 
 
@@ -131,5 +132,5 @@ def extracting_search_results(search_results: list, listing_counter: int, listin
         db_table_row_data[2] = extract_num_ratings(listing)
         db_table_row_data[3] = extract_product_price(listing)
         db_table_row_data[4] = extract_product_URL(listing)
-        put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
+        db_utils.put_data_in_tables(tuple(db_table_row_data), db_cursor, key)
     return listing_counter
