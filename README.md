@@ -17,6 +17,12 @@ This project collects and filters Amazon’s product data for 6 search keywords:
   - 8-channel Audio Mixers
   - Gaming Laptops
 
+The User then filters by category, number of ratings, the rating itself, and the price and then stores them in a filtered file. 
+
+To use the program, answer the questions using valid inputs, and then head over to the filtered data table to find all the results.
+
+
+
 Developed in Python 3.11
 
 PyCharm 2022.3 (Community Edition)
